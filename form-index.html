@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gaming Rank Application</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background: #0a0e27;
+    }
+    nav {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      background: #9333ea;
+      border: 1px solid #a855f7;
+      color: #fff;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
+      color: #fff;
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 3rem;
+      border: 2px solid #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    .featured-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .card {
+      background: linear-gradient(135deg, #1e1b4b 0%, #2d1b4e 100%);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 2px solid #a855f7;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+    }
+    .card h3 {
+      color: #a855f7;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .card p {
+      color: #b0b0b0;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s;
+      border: 1px solid #a855f7;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+    .btn-secondary {
+      background: #666;
+    }
+    .btn-secondary:hover {
+      background: #555;
+    }
+    .info-section {
+      background: linear-gradient(135deg, #1e1b4b 0%, #2d1b4e 100%);
+      padding: 2rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      border: 1px solid #a855f7;
+    }
+    .info-section h2 {
+      color: #a855f7;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #9333ea;
+      padding-bottom: 0.5rem;
+    }
+    .info-section ol li {
+      color: #b0b0b0;
+    }
+    .info-section p {
+      color: #b0b0b0;
+    }
+    footer {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      color: #e0e0e0;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="form-index.html">Home</a></li>
+      <li><a href="form-application.html">Apply Now</a></li>
+      <li><a href="form-status.html">Check Status</a></li>
+      <li><a href="form-admin.html">⭐ Admin</a></li>
+      <li><a href="form-faq.html">FAQ</a></li>
+      <li><a href="how-to-share.html" style="color: #ffd700;">🌐 Share</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>🎮 ROBLOX Rank Application System 🎮</h1>
+      <p>Apply for premium ranks and become a legendary Roblox player!</p>
+    </header>
+
+    <section class="featured-section">
+      <div class="card">
+        <h3>👑 Apply for Rank</h3>
+        <p>Submit your application to join elite Roblox groups and unlock exclusive games, items, and benefits!</p>
+        <a href="form-application.html" class="btn">Apply Now</a>
+      </div>
+      <div class="card">
+        <h3>📊 Check Application Status</h3>
+        <p>Track your rank application in real-time. See where you stand in our exclusive community.</p>
+        <a href="form-status.html" class="btn">View Status</a>
+      </div>
+      <div class="card">
+        <h3>❓ Rank FAQ</h3>
+        <p>Find answers about Roblox ranks, requirements, and the application process.</p>
+        <a href="form-faq.html" class="btn">Learn More</a>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h2>Roblox Rank Promotion Process</h2>
+      <ol style="margin-left: 2rem; line-height: 2;">
+        <li><strong>Complete Application:</strong> Submit your Roblox username and provide proof of gameplay</li>
+        <li><strong>Verify Account:</strong> Link your Roblox account and show game statistics</li>
+        <li><strong>Submission Review:</strong> Confirm your stats and additional achievements</li>
+        <li><strong>Group Review:</strong> Our admins evaluate your experience level and group fit</li>
+        <li><strong>Rank Assignment:</strong> Upon approval, you'll be promoted to your new rank with exclusive perks!</li>
+      </ol>
+    </section>
+
+    <section class="info-section">
+      <h2>⭐ Available Roblox Ranks</h2>
+      <p><strong>Member:</strong> Basic access | <strong>Contributor:</strong> Active players/Long-time members/Experienced creatorsExperienced creators | <strong>Developer:</strong> Game developers with popular titles | <strong>Tester:</strong> Trusted community testers | <strong>Admin:</strong> Full access and moderation capabilities</p>
+      <p style="margin-top: 1rem;"><strong>Processing Time:</strong> Rank decisions are made within 2-4 business days.</p>
+      <p><strong>Support:</strong> Contact our team on Roblox or Discord for assistance</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 ROBLOX Rank Application System. All rights reserved. | Level Up on ROBLOX! 🎮</p>
+  </footer>
+</body>
+</html>

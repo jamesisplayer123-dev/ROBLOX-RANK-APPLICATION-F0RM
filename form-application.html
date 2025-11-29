@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rank Application Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background: #0a0e27;
+    }
+    nav {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    nav a:hover {
+      background: #9333ea;
+      color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    header {
+      background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border: 2px solid #a855f7;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .form-container {
+      background: linear-gradient(135deg, #1e1b4b 0%, #2d1b4e 100%);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+      border: 1px solid #a855f7;
+    }
+    .form-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #3d3866;
+    }
+    .form-section:last-child {
+      border-bottom: none;
+    }
+    .form-section h2 {
+      color: #a855f7;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+    .required {
+      color: #ff6b9d;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #a855f7;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      background: #1a1230;
+      color: #e0e0e0;
+      transition: border-color 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #ff6b9d;
+      box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .checkbox-group, .radio-group {
+      margin-top: 0.5rem;
+    }
+    .checkbox-item, .radio-item {
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    input[type="checkbox"], input[type="radio"] {
+      width: auto;
+      margin-right: 0.5rem;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    button {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .btn-submit {
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+      color: white;
+      border: 1px solid #a855f7;
+    }
+    .btn-submit:hover {
+      background: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+    .btn-reset {
+      background: #3d3866;
+      color: #e0e0e0;
+      border: 1px solid #6b5b95;
+    }
+    .btn-reset:hover {
+      background: #4a4a7a;
+    }
+    .error {
+      color: #ff6b9d;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+    .success-message {
+      background: linear-gradient(90deg, #2d7a4a 0%, #1f5c35 100%);
+      color: #90ee90;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      display: none;
+      border: 1px solid #4caf50;
+    }
+    footer {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      color: #e0e0e0;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="form-index.html">Home</a></li>
+      <li><a href="form-application.html">Apply Now</a></li>
+      <li><a href="form-status.html">Check Status</a></li>
+      <li><a href="form-faq.html">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>👑 ROBLOX Rank Application</h1>
+    </header>
+
+    <div class="form-container">
+      <div class="success-message" id="successMessage" role="status" aria-live="polite">
+        ✓ Application submitted! Your application ID is: <strong id="refNumber"></strong>
+      </div>
+      <div style="margin-top: 0.5rem; display:flex; gap:0.5rem; align-items:center;">
+        <button id="exportSubmissionsBtn" style="background:#444;color:#fff;padding:0.5rem;border-radius:4px;border:1px solid #333;cursor:pointer;">Export Submissions</button>
+        <button id="downloadSubmissionsBtn" style="background:#333;color:#fff;padding:0.5rem;border-radius:4px;border:1px solid #222;cursor:pointer;">Download Submissions</button>
+        <small style="color:#bbb;margin-left:0.5rem;">(Use when serving from file:// to move data to admin)</small>
+      </div>
+
+      <form id="applicationForm">
+        <!-- Player Information Section -->
+        <div class="form-section">
+          <h2>🎮 ROBLOX Player Information</h2>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">ROBLOX Username <span class="required">*</span></label>
+              <input type="text" id="firstName" name="firstName" placeholder="Your ROBLOX username" required>
+              <div class="error" id="firstNameError">ROBLOX username is required</div>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Display Name <span class="required">*</span></label>
+              <input type="text" id="lastName" name="lastName" placeholder="How you appear in the community" required>
+              <div class="error" id="lastNameError">Display name is required</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" name="email" required>
+              <div class="error" id="emailError">Valid email is required</div>
+            </div>
+            <div class="form-group">
+              <label for="phone">Discord Username <span class="required">*</span></label>
+              <input type="text" id="phone" name="phone" placeholder="YourName#0000" required>
+              <div class="error" id="phoneError">Discord username is required</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gaming Profile Section -->
+        <div class="form-section">
+          <h2>📊 ROBLOX Profile Details</h2>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="street">Favorite ROBLOX Game <span class="required">*</span></label>
+              <select id="street" name="street" required>
+                <option value="">-- Select Game --</option>
+                <option value="Halloween Obby">Halloween Obby</option>
+              </select>
+              <div class="error" id="streetError">Favorite game is required</div>
+            </div>
+            
+          <div class="form-row">
+            <div class="form-group">
+              <label for="state">Account Age (years) <span class="required">*</span></label>
+              <input type="number" id="state" name="state" placeholder="2" min="0" max="20" required>
+              <div class="error" id="stateError">Account age is required</div>
+            </div>
+        
+           <div class="form-group">
+            <label for="country">Desired Rank <span class="required">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">-- Select Rank --</option>
+              <option value="member">Member</option>
+              <option value="contributor">Contributor</option>
+              <option value="tester">Tester</option>
+              <option value="developer">Developer</option>
+              <option value="admin">Admin</option>
+            </select>
+            <div class="error" id="countryError">Desired rank is required</div>
+          </div>
+        </div>
+
+        <!-- Application Details Section -->
+        <div class="form-section">
+          <h2>📋 Application Details</h2>
+          
+          <div class="form-group">
+            <label for="appType">Application Type <span class="required">*</span></label>
+            <select id="appType" name="appType" required>
+              <option value="">-- Select Application Type --</option>
+              <option value="promotion">Rank Promotion</option>
+              <option value="newmember">New Member</option>
+              <option value="creator">Creator Application</option>
+              <option value="developer">Developer Application</option>
+            </select>
+            <div class="error" id="appTypeError">Application type is required</div>
+          </div>
+          
+          <div class="form-group">
+            <label>Why do you deserve this ROBLOX rank? <span class="required">*</span></label>
+            <textarea id="comments" name="comments" placeholder="Tell us about your ROBLOX accomplishments, community contributions, and dedication..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Contact Method <span class="required">*</span></label>
+            <div class="radio-group">
+              <div class="radio-item">
+                <input type="radio" id="contactEmail" name="contactMethod" value="email" required>
+                <label for="contactEmail">Email</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="contactPhone" name="contactMethod" value="discord">
+                <label for="contactPhone">Discord</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="contactBoth" name="contactMethod" value="both">
+                <label for="contactBoth">Both</label>
+              </div>
+            </div>
+            <div class="error" id="contactMethodError">Contact method is required</div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the Gaming Code of Conduct <span class="required">*</span></label>
+              </div>
+              <div class="error" id="termsError">You must agree to the code of conduct</div>
+            </div>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <label for="privacy">I certify that the information provided is accurate <span class="required">*</span></label>
+              </div>
+              <div class="error" id="privacyError">You must certify the information</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Buttons -->
+        <div class="form-buttons">
+          <button type="submit" class="btn-submit">Submit Application</button>
+          <button type="reset" class="btn-reset">Clear Form</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Gaming Rank Application Portal. All rights reserved. | Play Hard, Rank Higher!</p>
+  </footer>
+
+  <script>
+    document.getElementById('applicationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validate form
+      if (validateForm()) {
+        // Generate a readable ROBLOX reference number and show it
+        const refNumber = generateRef();
+        document.getElementById('refNumber').textContent = refNumber;
+        document.getElementById('successMessage').style.display = 'block';
+        console.debug('Application reference generated:', refNumber);
+
+        // Build application object to persist
+        const app = {
+          id: refNumber,
+          player: document.getElementById('lastName').value.trim() || document.getElementById('firstName').value.trim(),
+          username: document.getElementById('firstName').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          discord: document.getElementById('phone').value.trim(),
+          game: document.getElementById('street').value || '',
+          achievement: '',
+          accountAge: document.getElementById('state').value ? parseInt(document.getElementById('state').value, 10) : null,
+          playtime: null,
+          rankApplied: document.getElementById('country').value || '',
+          applicationType: document.getElementById('appType').value || '',
+          motivation: document.getElementById('comments').value.trim() || '',
+          contactMethod: (document.querySelector('input[name="contactMethod"]:checked') || {}).value || '',
+          submissionDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+          status: 'pending'
+        };
+
+        try {
+          const key = 'rbx_applications';
+          const stored = JSON.parse(localStorage.getItem(key) || '[]');
+          stored.unshift(app);
+          localStorage.setItem(key, JSON.stringify(stored));
+          console.debug('Application saved to localStorage', app);
+        } catch (err) {
+          console.error('Could not save application to localStorage', err);
+        }
+
+        // Clear form
+        this.reset();
+
+        // Scroll to success message
+        document.querySelector('header').scrollIntoView({ behavior: 'smooth' });
+
+        // Hide success message after 10 seconds
+        setTimeout(function() {
+          document.getElementById('successMessage').style.display = 'none';
+        }, 10000);
+      }
+    });
+
+    function validateForm() {
+      let isValid = true;
+      
+      // Reset all errors
+      document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+      
+      if (!document.getElementById('firstName').value.trim()) {
+        document.getElementById('firstNameError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Display Name
+      if (!document.getElementById('lastName').value.trim()) {
+        document.getElementById('lastNameError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Email
+      const email = document.getElementById('email').value;
+      if (!email || !isValidEmail(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Discord Username
+      if (!document.getElementById('phone').value.trim()) {
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Favorite ROBLOX Game
+      if (!document.getElementById('street').value) {
+        document.getElementById('streetError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Account Age
+      if (!document.getElementById('state').value) {
+        document.getElementById('stateError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Desired Rank
+      if (!document.getElementById('country').value) {
+        document.getElementById('countryError').style.display = 'block';
+        isValid = false;
+      }
+      
+      // Application Type
+      if (!document.getElementById('appType').value) {
+        document.getElementById('appTypeError').style.display = 'block';
+        isValid = false;
+      // Favorite ROBLOX Game
+      }
+      
+      // Comments/Reason
+      if (!document.getElementById('comments').value.trim()) {
+        isValid = false;
+      }
+      
+      // Contact Method
+      if (!document.querySelector('input[name="contactMethod"]:checked')) {
+        isValid = false;
+      }
+      
+      // Agreement checkboxes
+      if (!document.getElementById('terms').checked) {
+        document.getElementById('termsError').style.display = 'block';
+        isValid = false;
+      }
+      
+      if (!document.getElementById('privacy').checked) {
+        document.getElementById('privacyError').style.display = 'block';
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Generate a readable reference: RBXAPP-YYYYMMDD-HHMMSS-XXXX
+    function generateRef() {
+      const pad = (n) => String(n).padStart(2, '0');
+      const d = new Date();
+      const date = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate());
+      const time = pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+      const rand = Math.floor(Math.random() * 9000) + 1000; // 4-digit random
+      return `RBXAPP-${date}-${time}-${rand}`;
+    }
+
+    // Export submissions to clipboard (or download)
+    function exportSubmissionsToClipboard() {
+      try {
+        const key = 'rbx_applications';
+        const json = localStorage.getItem(key) || '[]';
+        navigator.clipboard.writeText(json).then(() => {
+          alert('Submissions JSON copied to clipboard. Paste into admin import.');
+        }).catch(() => {
+          prompt('Copy the submissions JSON below (Ctrl+C):', json);
+        });
+      } catch (err) {
+        alert('No submissions found or clipboard not available.');
+      }
+    }
+
+    function downloadSubmissions() {
+      try {
+        const key = 'rbx_applications';
+        const json = localStorage.getItem(key) || '[]';
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rbx_applications.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Unable to download submissions.');
+      }
+    }
+
+    // Wire up export buttons if present
+    document.addEventListener('DOMContentLoaded', function() {
+      const exportBtn = document.getElementById('exportSubmissionsBtn');
+      if (exportBtn) exportBtn.addEventListener('click', exportSubmissionsToClipboard);
+      const dlBtn = document.getElementById('downloadSubmissionsBtn');
+      if (dlBtn) dlBtn.addEventListener('click', downloadSubmissions);
+    });
+  </script>
+</body>
+</html>

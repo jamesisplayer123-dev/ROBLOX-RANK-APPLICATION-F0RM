@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>ROBLOX Rank Application - FAQ</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #e0e0e0; background: linear-gradient(135deg,#0a0e27 0%,#1a1a3e 100%); }
+          nav { background: linear-gradient(90deg,#9333ea 0%,#7e22ce 100%); padding: 1rem 0; position: sticky; top: 0; z-index:100; box-shadow: 0 2px 15px rgba(147,51,234,0.3); }
+          nav ul { list-style:none; display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+          nav a { color:white; text-decoration:none; padding:0.5rem 1rem; border-radius:4px; transition:all 0.3s; }
+          nav a:hover { background:rgba(168,85,247,0.2); }
+          .container { max-width:1000px; margin:2rem auto; padding:2rem; }
+          header { background:linear-gradient(90deg,#9333ea 0%,#7e22ce 100%); color:white; padding:2rem; text-align:center; border-radius:8px; margin-bottom:2rem; box-shadow:0 0 20px rgba(147,51,234,0.4); }
+          header h1 { font-size:2rem; }
+          .faq-container { background:#1a1a3e; padding:2rem; border-radius:8px; border:1px solid #9333ea; }
+          .faq-item { margin-bottom:1rem; border-left:4px solid #9333ea; padding-left:1rem; }
+          .faq-item h3 { color:#9333ea; cursor:pointer; user-select:none; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem; }
+          .faq-answer { display:none; color:#ccc; margin-top:0.5rem; }
+          .faq-item.open .faq-answer { display:block; }
+          .category { margin-top:2rem; }
+          .category h2 { color:#9333ea; margin-bottom:1rem; border-bottom:2px solid #9333ea; padding-bottom:0.5rem; }
+          .highlight { background:#2a2a4e; padding:1rem; border-radius:4px; margin-top:1rem; border-left:3px solid #4caf50; }
+          footer { text-align:center; margin-top:2rem; padding:1.5rem; color:#999; }
+          a.inline { color:#a855f7; text-decoration:underline; }
+        </style>
+      </head>
+      <body>
+        <nav>
+          <ul>
+            <li><a href="form-index.html">Home</a></li>
+            <li><a href="form-application.html">Apply Now</a></li>
+            <li><a href="form-status.html">Check Status</a></li>
+            <li><a href="form-admin.html">⭐ Admin</a></li>
+            <li><a href="how-to-share.html">🌐 Share</a></li>
+          </ul>
+        </nav>
+
+        <div class="container">
+          <header>
+            <h1>👑 ROBLOX Rank Application — FAQ</h1>
+            <p>Answers to common questions about applying, tracking, and moderation.</p>
+          </header>
+
+          <div class="faq-container">
+
+            <div class="category">
+              <h2>📋 Applying</h2>
+
+              <div class="faq-item">
+                <h3>What is this application portal for?</h3>
+                <div class="faq-answer">
+                  <p>This portal lets ROBLOX players apply for community ranks (Member, Contributor, Developer, Tester, Admin). Applications are reviewed by moderators and admins.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3>How do I apply?</h3>
+                <div class="faq-answer">
+                  <p>Go to <a class="inline" href="form-application.html">Apply Now</a>, fill in your ROBLOX username, contact, favorite game, achievements, desired rank and why you deserve it, then submit. You'll receive a reference like <strong>RBXAPP1234567890</strong>.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3>What information is required?</h3>
+                <div class="faq-answer">
+                  <ul>
+                    <li>ROBLOX Username and Display Name</li>
+                    <li>Email and Discord contact</li>
+                    <li>Favorite ROBLOX game</li>
+                    <li>Account age,e</li>
+                    <li>Desired rank and motivation statement</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="category">
+              <h2>🎮 Games & Requirements</h2>
+
+              <div class="faq-item">
+                <h3>Which ROBLOX games are supported?</h3>
+                <div class="faq-answer">
+                  <p>Common games listed include: Adopt Me!, Welcome to Bloxburg, Tower of Hell, Prison Life, ROBLOX High School, Arsenal, Murder Mystery 2, Bedwars. Pick the game where your achievements are strongest.</p>
+                </div>
+              </div>
+              
+            <div class="category">
+              <h2>⏱️ Status & Timelines</h2>
+
+              <div class="faq-item">
+                <h3>How long does review take?</h3>
+                <div class="faq-answer">
+                  <p>Typical timeline: initial screening 1-3 days, detailed review 3-7 days, final decision within 7-14 days. Busy periods may extend this.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3>How do I check my application status?</h3>
+                <div class="faq-answer">
+                  <p>Use your reference (RBXAPP...) at the <a class="inline" href="form-status.html">Check Status</a> page. Enter the code to see the current status and timeline.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="category">
+              <h2>👥 Moderators & Admins</h2>
+
+              <div class="faq-item">
+                <h3>How do moderators review applications?</h3>
+                <div class="faq-answer">
+                  <p>Moderators use the Admin Panel (<a class="inline" href="form-admin.html">Admin</a>) to filter, open, and evaluate applications. They can approve or reject and leave notes (mocked in this demo).</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3>How do I get moderator/admin access?</h3>
+                <div class="faq-answer">
+                  <p>Admins add team members via the User Management tab in the Admin Panel. Roles: Reviewer (view only), Moderator (approve/reject), Admin (manage users).</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="category">
+              <h2>❓ Troubleshooting</h2>
+
+              <div class="faq-item">
+                <h3>My form won't submit — what do I check?</h3>
+                <div class="faq-answer">
+                  <ul>
+                    <li>All required fields filled?</li>
+                    <li>Selected contact method (Email/Discord)?</li>
+                    <li>Checked the agreement boxes?</li>
+                    <li>JavaScript enabled in your browser?</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3>I lost my reference number</h3>
+                <div class="faq-answer">
+                  <p>Reference is shown after submit. Check browser history or contact an admin with your ROBLOX username to request help.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlight">
+              <h3 style="color:#9333ea;">Still need help?</h3>
+              <p>Visit the <a class="inline" href="admin-guide.html">Admin Guide</a> or <a class="inline" href="how-to-share.html">How to Share</a> pages, or contact a moderator on Discord. Include your reference number when possible.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <footer>
+          <p>&copy; 2025 ROBLOX Rank Application System</p>
+        </footer>
+
+        <script>
+          // FAQ expand/collapse
+          document.querySelectorAll('.faq-item h3').forEach(h => {
+            h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+          });
+        </script>
+      </body>
+      </html>
+            <li>Address Information</li>

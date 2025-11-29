@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ROBLOX Application Status</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
+    }
+    nav {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    nav a:hover {
+      background: rgba(168, 85, 247, 0.5);
+      text-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    header {
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .status-container {
+      background: #1a1a3e;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(147, 51, 234, 0.2);
+      border: 1px solid #9333ea;
+    }
+    .search-box {
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .search-box input {
+      flex: 1;
+      min-width: 250px;
+      padding: 0.8rem;
+      border: 1px solid #9333ea;
+      border-radius: 4px;
+      font-size: 1rem;
+      background: #0a0e27;
+      color: #e0e0e0;
+    }
+    .search-box button {
+      padding: 0.8rem 2rem;
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+      color: white;
+      border: 1px solid #a855f7;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .search-box button:hover {
+      background: #1a5f7a;
+    }
+    .status-result {
+      margin-top: 2rem;
+      display: none;
+    }
+    .status-header {
+      background: #f0f4f8;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid #2a8fa3;
+    }
+    .status-header h2 {
+      color: #1a5f7a;
+      margin-bottom: 0.5rem;
+    }
+    .ref-number {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2a8fa3;
+      font-family: monospace;
+    }
+    .status-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 600px) {
+      .status-info {
+        grid-template-columns: 1fr;
+      }
+    }
+    .info-item {
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 4px;
+    }
+    .info-item label {
+      display: block;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+    .info-item value {
+      display: block;
+      color: #1a5f7a;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    .timeline {
+      margin-top: 2rem;
+    }
+    .timeline h3 {
+      color: #1a5f7a;
+      margin-bottom: 1.5rem;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .timeline-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 40px;
+      width: 2px;
+      height: 40px;
+      background: #ddd;
+    }
+    .timeline-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #2a8fa3;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .timeline-dot.completed {
+      background: #4caf50;
+    }
+    .timeline-dot.pending {
+      background: #ffc107;
+    }
+    .timeline-content {
+      flex: 1;
+    }
+    .timeline-content h4 {
+      color: #1a5f7a;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-content p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+    .badge-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .badge-under-review {
+      background: #cfe2ff;
+      color: #084298;
+    }
+    .badge-approved {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+    .badge-rejected {
+      background: #f8d7da;
+      color: #842029;
+    }
+    .no-result {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+    }
+    footer {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      color: #e0e0e0;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="form-index.html">Home</a></li>
+      <li><a href="form-application.html">Apply Now</a></li>
+      <li><a href="form-status.html">Check Status</a></li>
+      <li><a href="form-faq.html">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Check Application Status</h1>
+    </header>
+
+    <div class="status-container">
+      <div style="margin-bottom: 1.5rem; padding: 1rem; background: #2a2a4e; border-left: 3px solid #9333ea; border-radius: 4px;">
+        <p style="font-size: 0.95rem;"><strong>📌 How to check:</strong> Enter your application reference number (starts with RBXAPP) that you received after submitting your application.</p>
+      </div>
+      <div class="search-box">
+        <input type="text" id="refNumber" placeholder="Enter your reference number (e.g., RBXAPP1732896543210)">
+        <button onclick="checkStatus()">Search</button>
+      </div>
+
+      <div class="status-result" id="statusResult">
+        <div class="status-header">
+          <h2>Application Status</h2>
+          <div class="ref-number" id="displayRef"></div>
+        </div>
+
+        <div class="status-info">
+          <div class="info-item">
+            <label>Applicant Name</label>
+            <value id="applicantName">John Doe</value>
+          </div>
+          <div class="info-item">
+            <label>Application Type</label>
+            <value id="applicationType">Employment</value>
+          </div>
+          <div class="info-item">
+            <label>Submission Date</label>
+            <value id="submissionDate">November 25, 2025</value>
+          </div>
+          <div class="info-item">
+            <label>Current Status</label>
+            <value id="currentStatus">Under Review</value>
+          </div>
+        </div>
+
+        <div class="status-badge" id="statusBadge" style="display: none;"></div>
+
+        <div class="timeline">
+          <h3>Application Timeline</h3>
+          <div class="timeline-item">
+            <div class="timeline-dot completed"></div>
+            <div class="timeline-content">
+              <h4>Application Received</h4>
+              <p>November 25, 2025 - Your application has been received and registered</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot completed"></div>
+            <div class="timeline-content">
+              <h4>Initial Review</h4>
+              <p>November 26, 2025 - Your application passed initial screening</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot pending"></div>
+            <div class="timeline-content">
+              <h4>Detailed Assessment</h4>
+              <p>In Progress - Your application is being reviewed in detail</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h4>Final Decision</h4>
+              <p>Pending - A decision will be made within 5 business days</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h4>Notification</h4>
+              <p>Pending - You will be notified of the outcome via email and phone</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-result" id="noResult" style="display: none;">
+        <p>No application found with this reference number.</p>
+        <p style="margin-top: 1rem;">Please check your reference number and try again.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Form Application Portal. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function checkStatus() {
+      const refNumber = document.getElementById('refNumber').value.trim();
+      
+      if (!refNumber) {
+        alert('Please enter a reference number');
+        return;
+      }
+      
+      // Simulate status lookup for ROBLOX applications
+      if (refNumber.startsWith('RBXAPP')) {
+        // Mock data for demonstration
+        const statuses = ['pending', 'under-review', 'approved'];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+        
+        document.getElementById('displayRef').textContent = refNumber;
+        document.getElementById('applicantName').textContent = 'ROBLOX Player';
+        
+        const statusMap = {
+          'pending': { text: 'Pending Review', badgeClass: 'badge-pending' },
+          'under-review': { text: 'Under Review', badgeClass: 'badge-under-review' },
+          'approved': { text: 'Approved', badgeClass: 'badge-approved' }
+        };
+        
+        const statusData = statusMap[randomStatus];
+        document.getElementById('currentStatus').textContent = statusData.text;
+        
+        const badge = document.getElementById('statusBadge');
+        badge.textContent = statusData.text;
+        badge.className = 'status-badge ' + statusData.badgeClass;
+        badge.style.display = 'inline-block';
+        
+        document.getElementById('statusResult').style.display = 'block';
+        document.getElementById('noResult').style.display = 'none';
+      } else {
+        document.getElementById('statusResult').style.display = 'none';
+        document.getElementById('noResult').style.display = 'block';
+      }
+    }
+    
+    // Allow Enter key to trigger search
+    document.getElementById('refNumber').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkStatus();
+      }
+    });
+
+    // Removed demo testSearch helper and sample reference list to simplify the page.
+  </script>
+</body>
+</html>

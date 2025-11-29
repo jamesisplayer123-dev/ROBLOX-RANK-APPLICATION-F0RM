@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ROBLOX Admin Panel - Application Management</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
+    }
+    nav {
+      background: linear-gradient(90deg, #1a1f3a 0%, #2d1b4e 100%);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    nav a:hover {
+      background: rgba(168, 85, 247, 0.5);
+      text-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    header {
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .auth-warning {
+      background: #2a2a4e;
+      border-left: 4px solid #ff6b6b;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      color: #ff6b6b;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+      border: 1px solid #a855f7;
+    }
+    .stat-card h3 {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    .filter-box {
+      background: #1a1a3e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #9333ea;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .filter-box label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #9333ea;
+    }
+    .filter-box select, .filter-box input {
+      width: 100%;
+      padding: 0.6rem;
+      background: #0a0e27;
+      border: 1px solid #9333ea;
+      border-radius: 4px;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+    }
+    .applications-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1a1a3e;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 15px rgba(147, 51, 234, 0.2);
+    }
+    .applications-table thead {
+      background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%);
+    }
+    .applications-table th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: white;
+    }
+    .applications-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+      color: #e0e0e0;
+    }
+    .applications-table tbody tr:hover {
+      background: #2a2a4e;
+    }
+    .ref-number {
+      font-family: monospace;
+      color: #9333ea;
+      font-weight: 500;
+    }
+    .btn-copy {
+      background: #444;
+      color: #fff;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #333;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .status-pending {
+      background: #ff9800;
+      color: white;
+    }
+    .status-approved {
+      background: #4caf50;
+      color: white;
+    }
+    .status-rejected {
+      background: #f44336;
+      color: white;
+    }
+    .status-reviewing {
+      background: #2196f3;
+      color: white;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .btn-view {
+      background: #2196f3;
+      color: white;
+    }
+    .btn-view:hover {
+      background: #1976d2;
+    }
+    .btn-approve {
+      background: #4caf50;
+      color: white;
+    }
+    .btn-approve:hover {
+      background: #388e3c;
+    }
+    .btn-reject {
+      background: #f44336;
+      color: white;
+    }
+    .btn-reject:hover {
+      background: #da190b;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: #1a1a3e;
+      margin: 5% auto;
+      padding: 2rem;
+      border: 1px solid #9333ea;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(147, 51, 234, 0.5);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-header h2 {
+      color: #9333ea;
+    }
+    .close {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #9333ea;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .close:hover {
+      color: #a855f7;
+    }
+    .app-detail {
+      margin-bottom: 1rem;
+    }
+    .app-detail label {
+      color: #9333ea;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .app-detail value {
+      display: block;
+      color: #e0e0e0;
+      padding: 0.5rem;
+      background: #0a0e27;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .modal-actions button {
+      flex: 1;
+      padding: 0.8rem;
+      font-size: 1rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      border-top: 1px solid #333;
+      color: #666;
+    }
+    .tab-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #333;
+    }
+    .tab-button {
+      padding: 1rem 2rem;
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab-button.active {
+      color: #9333ea;
+      border-bottom-color: #9333ea;
+    }
+    .tab-button:hover {
+      color: #a855f7;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .user-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .user-card {
+      background: #1a1a3e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #9333ea;
+    }
+    .user-card h3 {
+      color: #9333ea;
+      margin-bottom: 0.5rem;
+    }
+    .user-info {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 0.5rem;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin: 0.3rem 0.3rem 0.3rem 0;
+    }
+    .role-admin {
+      background: #f44336;
+      color: white;
+    }
+    .role-moderator {
+      background: #2196f3;
+      color: white;
+    }
+    .role-reviewer {
+      background: #4caf50;
+      color: white;
+    }
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .user-actions button {
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .add-user-form {
+      background: #1a1a3e;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid #9333ea;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      color: #9333ea;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.6rem;
+      background: #0a0e27;
+      border: 1px solid #9333ea;
+      border-radius: 4px;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #a855f7;
+      box-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+    }
+    @media (max-width: 768px) {
+      .applications-table {
+        font-size: 0.9rem;
+      }
+      .applications-table th, .applications-table td {
+        padding: 0.7rem;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="form-index.html">Home</a></li>
+      <li><a href="form-application.html">Apply Now</a></li>
+      <li><a href="form-status.html">Check Status</a></li>
+      <li><a href="form-admin.html" style="color: #ffd700;">⭐ Admin Panel</a></li>
+      <li><a href="form-faq.html">FAQ</a></li>
+      <li><a href="admin-guide.html" style="color: #a855f7;">📚 Admin Guide</a></li>
+      <li style="margin-left: auto;"><a href="#" id="userInfo" onclick="showUserMenu(); return false;" style="color: #a855f7;">👤 Logged in</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>👑 ROBLOX Admin Panel</h1>
+      <p>Manage and Review Applications</p>
+      <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Logged in as: <strong id="currentUser">Administrator</strong></p>
+    </header>
+
+    <div class="auth-warning">
+      <strong>⚠️ Admin Access:</strong> This panel is for moderators and developers only. In a real system, this would require authentication and proper permissions.
+    </div>
+
+    <div class="tab-container">
+      <button class="tab-button active" onclick="switchTab('applications', event)">📋 Applications</button>
+      <button class="tab-button" onclick="switchTab('ranks', event)">👑 Ranks Overview</button>
+      <button class="tab-button" onclick="switchTab('users', event)">👥 User Management</button>
+    </div>
+
+    <div id="applications" class="tab-content active">
+      <div class="stat-card">
+        <h3>Total Applications</h3>
+        <div class="number" id="totalApps">24</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pending Review</h3>
+        <div class="number" id="pendingApps">8</div>
+      </div>
+      <div class="stat-card">
+        <h3>Approved</h3>
+        <div class="number" id="approvedApps">12</div>
+      </div>
+      <div class="stat-card">
+        <h3>Rejected</h3>
+        <div class="number" id="rejectedApps">4</div>
+      </div>
+    </div>
+
+    <div class="filter-box">
+      <div>
+        <label for="filterStatus">Filter by Status:</label>
+        <select id="filterStatus" onchange="filterApplications()">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending Review</option>
+          <option value="reviewing">Under Review</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <div>
+        <label for="filterRank">Filter by Rank Applied:</label>
+        <select id="filterRank" onchange="filterApplications()">
+          <option value="">All Ranks</option>
+          <option value="member">Member</option>
+          <option value="contributor">Contributor</option>
+          <option value="expert">Expert Creator</option>
+          <option value="veteran">Veteran</option>
+          <option value="moderator">Moderator</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div>
+        <label for="searchBox">Search Reference:</label>
+        <input type="text" id="searchBox" placeholder="RBXAPP..." onkeyup="filterApplications()">
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <button style="background:#444;color:#fff;padding:0.5rem;border-radius:4px;border:1px solid #333;cursor:pointer;" onclick="importSubmissionsPrompt()">Import Submissions</button>
+        <button style="background:#333;color:#fff;padding:0.5rem;border-radius:4px;border:1px solid #222;cursor:pointer;" onclick="exportAdminSubmissions()">Export All</button>
+      </div>
+    </div>
+
+    <table class="applications-table">
+      <thead>
+        <tr>
+          <th>Reference #</th>
+          <th>Player</th>
+          <th>Rank Applied</th>
+          <th>Submission Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsBody">
+        <!-- Populated by JavaScript -->
+      </tbody>
+    </table>
+    </div>
+
+    <!-- Ranks Overview Tab -->
+    <div id="ranks" class="tab-content">
+      <h2 style="color: #9333ea; margin-bottom: 1.5rem;">👑 ROBLOX Ranks Overview</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div class="stat-card">
+          <h3>Total Ranked Players</h3>
+          <div class="number" id="totalRankedPlayers">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Admin Count</h3>
+          <div class="number" id="adminCount">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Moderator Count</h3>
+          <div class="number" id="moderatorCount">0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Team Members</h3>
+          <div class="number" id="teamMemberCount">0</div>
+        </div>
+      </div>
+
+      <h3 style="color: #9333ea; margin: 2rem 0 1rem 0;">📊 Current ROBLOX Ranks</h3>
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>Rank Level</th>
+            <th>Players with Rank</th>
+            <th>Required Playtime</th>
+            <th>Assigned By</th>
+          </tr>
+        </thead>
+        <tbody id="ranksTableBody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+
+      <h3 style="color: #9333ea; margin: 2rem 0 1rem 0;">🔐 Admin Panel Access</h3>
+      <div style="background: #2a2a4e; padding: 1.5rem; border-radius: 8px; border-left: 3px solid #9333ea;">
+        <p style="margin-bottom: 1rem;"><strong>People with access to this admin panel:</strong></p>
+        <table class="applications-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Access Level</th>
+            </tr>
+          </thead>
+          <tbody id="accessTableBody">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Users Management Tab -->
+    <div id="users" class="tab-content">
+      <div class="add-user-form">
+        <h2 style="margin-bottom: 1.5rem; color: #9333ea;">➕ Add New User</h2>
+        <div class="form-group">
+          <label>Username / Discord ID</label>
+          <input type="text" id="newUserName" placeholder="e.g., JohnDev#1234">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="newUserEmail" placeholder="developer@example.com">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="newUserRole">
+            <option value="reviewer">Reviewer (View Only)</option>
+            <option value="moderator">Moderator (Approve/Reject)</option>
+            <option value="admin">Admin (Full Access)</option>
+          </select>
+        </div>
+        <button style="width: 100%; background: linear-gradient(90deg, #9333ea 0%, #7e22ce 100%); color: white; padding: 0.8rem;" onclick="addNewUser()">Add User</button>
+      </div>
+
+      <h2 style="color: #9333ea; margin-top: 2rem; margin-bottom: 1rem;">👥 Team Members</h2>
+      <div id="usersList" class="user-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- View Application Modal -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Application Details</h2>
+        <span class="close" onclick="closeModal('viewModal')">&times;</span>
+      </div>
+      <div id="modalBody">
+        <!-- Populated by JavaScript -->
+      </div>
+      <div class="modal-actions">
+        <button class="btn-approve" onclick="approveApplication()">✓ Approve</button>
+        <button class="btn-reject" onclick="rejectApplication()">✗ Reject</button>
+        <button style="background: #666;" onclick="closeModal('viewModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 ROBLOX Rank Application System. Admin Panel v1.0</p>
+  </footer>
+
+  <script>
+    // Mock applications database
+    const mockApplications = [
+      {
+        id: 'RBXAPP1234567890',
+        player: 'BuildMaster_123',
+        username: 'buildmaster123',
+        email: 'player1@example.com',
+        discord: 'BuildMaster#1234',
+        game: 'Welcome to Bloxburg',
+        achievement: 'Level 150 Homeowner',
+        accountAge: 5,
+        playtime: 800,
+        rankApplied: 'expert',
+        applicationType: 'Creator Application',
+        motivation: 'I have been creating content for ROBLOX games for 3 years and want to contribute more to the community.',
+        contactMethod: 'discord',
+        submissionDate: 'Nov 25, 2025',
+        status: 'pending'
+      },
+      {
+        id: 'RBXAPP9876543210',
+        player: 'AdoptMe_Fan99',
+        username: 'adoptme_fan99',
+        email: 'player2@example.com',
+        discord: 'AdoptFan#9999',
+        game: 'Adopt Me!',
+        achievement: 'Full Pet Collection',
+        accountAge: 6,
+        playtime: 1200,
+        rankApplied: 'veteran',
+        applicationType: 'Rank Promotion',
+        motivation: 'I am a dedicated player and have invested significant time helping new players in the community.',
+        contactMethod: 'email',
+        submissionDate: 'Nov 24, 2025',
+        status: 'reviewing'
+      },
+      {
+        id: 'RBXAPP5555555555',
+        player: 'Arsenal_Pro',
+        username: 'arsenal_pro',
+        email: 'player3@example.com',
+        discord: 'ArsenalPro#5555',
+        game: 'Arsenal',
+        achievement: '10000+ Eliminations',
+        accountAge: 4,
+        playtime: 600,
+        rankApplied: 'contributor',
+        applicationType: 'New Member',
+        motivation: 'I enjoy competitive gaming and want to join the moderator team.',
+        contactMethod: 'both',
+        submissionDate: 'Nov 26, 2025',
+        status: 'pending'
+      },
+      {
+        id: 'RBXAPP7777777777',
+        player: 'TowerKing_2025',
+        username: 'tower_king',
+        email: 'player4@example.com',
+        discord: 'TowerKing#7777',
+        game: 'Tower of Hell',
+        achievement: 'Speed Runner 2:35',
+        accountAge: 3,
+        playtime: 450,
+        rankApplied: 'member',
+        applicationType: 'Rank Promotion',
+        motivation: 'Passionate about speedrunning and want to contribute guides to the community.',
+        contactMethod: 'discord',
+        submissionDate: 'Nov 23, 2025',
+        status: 'approved'
+      },
+      {
+        id: 'RBXAPP2222222222',
+        player: 'BedWars_Elite',
+        username: 'bedwars_elite',
+        email: 'player5@example.com',
+        discord: 'BedWarsElite#2222',
+        game: 'Bedwars',
+        achievement: 'Win Streak: 50',
+        accountAge: 7,
+        playtime: 1500,
+        rankApplied: 'moderator',
+        applicationType: 'Moderator Application',
+        motivation: 'I want to help moderate and ensure fair play across all servers.',
+        contactMethod: 'email',
+        submissionDate: 'Nov 22, 2025',
+        status: 'rejected'
+      }
+    ];
+
+    let currentViewingApp = null;
+    let displayedApplications = [...mockApplications];
+
+    // Mock users database
+    let teamMembers = [
+      {
+        id: 1,
+        name: 'You (Creator)',
+        email: 'admin@roblox.dev',
+        role: 'admin',
+        joinDate: 'Nov 1, 2025',
+        status: 'active'
+      },
+      {
+        id: 2,
+        name: 'Developer#5678',
+        email: 'dev1@roblox.dev',
+        role: 'moderator',
+        joinDate: 'Nov 10, 2025',
+        status: 'active'
+      },
+      {
+        id: 3,
+        name: 'Reviewer#1111',
+        email: 'reviewer@roblox.dev',
+        role: 'reviewer',
+        joinDate: 'Nov 15, 2025',
+        status: 'active'
+      }
+    ];
+
+    let nextUserId = 4;
+
+    // Mock player ranks database
+    let playerRanks = [
+      { player: 'BuildMaster_123', username: 'buildmaster123', rank: 'Expert Creator', playtime: 800, joinDate: 'Nov 15, 2025', assignedBy: 'You' },
+      { player: 'AdoptMe_Fan99', username: 'adoptme_fan99', rank: 'Veteran', playtime: 1200, joinDate: 'Nov 20, 2025', assignedBy: 'Developer#5678' },
+      { player: 'Arsenal_Pro', username: 'arsenal_pro', rank: 'Contributor', playtime: 600, joinDate: 'Nov 18, 2025', assignedBy: 'You' },
+      { player: 'TowerKing_2025', username: 'tower_king', rank: 'Member', playtime: 450, joinDate: 'Nov 10, 2025', assignedBy: 'Reviewer#1111' },
+      { player: 'BedWars_Elite', username: 'bedwars_elite', rank: 'Moderator', playtime: 1500, joinDate: 'Nov 25, 2025', assignedBy: 'You' },
+      { player: 'BloxburgBuilder', username: 'bloxburg_builder', rank: 'Member', playtime: 300, joinDate: 'Nov 22, 2025', assignedBy: 'Developer#5678' },
+      { player: 'MurderMystery_Pro', username: 'mm2_pro', rank: 'Contributor', playtime: 700, joinDate: 'Nov 19, 2025', assignedBy: 'You' },
+      { player: 'SpeedRunner_King', username: 'speedrunner_k', rank: 'Member', playtime: 250, joinDate: 'Nov 21, 2025', assignedBy: 'Reviewer#1111' }
+    ];
+
+    // Rank tier info
+    const rankTiers = [
+      { rank: 'Admin', minPlaytime: 2000, color: '#ff6b6b' },
+      { rank: 'Moderator', minPlaytime: 1500, color: '#2196f3' },
+      { rank: 'Veteran', minPlaytime: 1000, color: '#9c27b0' },
+      { rank: 'Expert Creator', minPlaytime: 800, color: '#f39c12' },
+      { rank: 'Contributor', minPlaytime: 500, color: '#1abc9c' },
+      { rank: 'Member', minPlaytime: 0, color: '#95a5a6' }
+    ];
+
+    function loadApplications() {
+      // Load persisted applications from localStorage and merge with mock data
+      try {
+        const stored = JSON.parse(localStorage.getItem('rbx_applications') || '[]');
+        if (Array.isArray(stored) && stored.length) {
+          // prepend stored apps if they do not already exist
+          stored.forEach(s => {
+            if (!mockApplications.find(m => m.id === s.id)) {
+              mockApplications.unshift(s);
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load stored applications', err);
+      }
+
+      displayedApplications = [...mockApplications];
+      displayApplications(displayedApplications);
+      updateStats();
+      displayRankOverview();
+    }
+
+    function displayApplications(apps) {
+      const tbody = document.getElementById('applicationsBody');
+      tbody.innerHTML = '';
+
+      apps.forEach(app => {
+        const row = document.createElement('tr');
+        const statusClass = `status-${app.status}`;
+        const statusText = {
+          pending: 'Pending Review',
+          reviewing: 'Under Review',
+          approved: 'Approved',
+          rejected: 'Rejected'
+        }[app.status];
+
+        row.innerHTML = `
+          <td>
+            <span class="ref-number" id="ref-${app.id}">${app.id}</span>
+            <button class="btn-copy" onclick="copyRef('${app.id}')" title="Copy reference">Copy</button>
+          </td>
+          <td>${app.player}</td>
+          <td>${app.rankApplied.charAt(0).toUpperCase() + app.rankApplied.slice(1)}</td>
+          <td>${app.submissionDate}</td>
+          <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-view" onclick="viewApplication('${app.id}')">View</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function viewApplication(refId) {
+      const app = mockApplications.find(a => a.id === refId);
+      if (!app) return;
+
+      currentViewingApp = app;
+      const modalBody = document.getElementById('modalBody');
+      modalBody.innerHTML = `
+        <div class="app-detail">
+          <label>Reference Number</label>
+          <value>${app.id}</value>
+        </div>
+        <div class="app-detail">
+          <label>ROBLOX Username</label>
+          <value>${app.username}</value>
+        </div>
+        <div class="app-detail">
+          <label>Player Display Name</label>
+          <value>${app.player}</value>
+        </div>
+        <div class="app-detail">
+          <label>Email</label>
+          <value>${app.email}</value>
+        </div>
+        <div class="app-detail">
+          <label>Discord</label>
+          <value>${app.discord}</value>
+        </div>
+        <div class="app-detail">
+          <label>Favorite Game</label>
+          <value>${app.game}</value>
+        </div>
+        <div class="app-detail">
+          <label>Highest Achievement</label>
+          <value>${app.achievement}</value>
+        </div>
+        <div class="app-detail">
+          <label>Account Age (years)</label>
+          <value>${app.accountAge}</value>
+        </div>
+        <div class="app-detail">
+          <label>Total Playtime (hours)</label>
+          <value>${app.playtime}</value>
+        </div>
+        <div class="app-detail">
+          <label>Rank Applied For</label>
+          <value>${app.rankApplied.toUpperCase()}</value>
+        </div>
+        <div class="app-detail">
+          <label>Application Type</label>
+          <value>${app.applicationType}</value>
+        </div>
+        <div class="app-detail">
+          <label>Motivation</label>
+          <value>${app.motivation}</value>
+        </div>
+        <div class="app-detail">
+          <label>Current Status</label>
+          <value style="color: ${app.status === 'approved' ? '#4caf50' : app.status === 'rejected' ? '#f44336' : '#ff9800'};">
+            ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+          </value>
+        </div>
+      `;
+
+      document.getElementById('viewModal').style.display = 'block';
+    }
+
+    function approveApplication() {
+      if (!currentViewingApp) return;
+      currentViewingApp.status = 'approved';
+      closeModal('viewModal');
+      displayApplications(displayedApplications);
+      updateStats();
+      alert(`✓ Application ${currentViewingApp.id} has been APPROVED!`);
+    }
+
+    function rejectApplication() {
+      if (!currentViewingApp) return;
+      const reason = prompt('Enter rejection reason (optional):');
+      currentViewingApp.status = 'rejected';
+      closeModal('viewModal');
+      displayApplications(displayedApplications);
+      updateStats();
+      alert(`✗ Application ${currentViewingApp.id} has been REJECTED!`);
+    }
+
+    function filterApplications() {
+      const statusFilter = document.getElementById('filterStatus').value;
+      const rankFilter = document.getElementById('filterRank').value;
+      const searchBox = document.getElementById('searchBox').value.toLowerCase();
+
+      displayedApplications = mockApplications.filter(app => {
+        const matchStatus = !statusFilter || app.status === statusFilter;
+        const matchRank = !rankFilter || app.rankApplied === rankFilter;
+        const matchSearch = !searchBox || app.id.toLowerCase().includes(searchBox);
+        return matchStatus && matchRank && matchSearch;
+      });
+
+      displayApplications(displayedApplications);
+    }
+
+    function updateStats() {
+      const total = mockApplications.length;
+      const pending = mockApplications.filter(a => a.status === 'pending').length;
+      const approved = mockApplications.filter(a => a.status === 'approved').length;
+      const rejected = mockApplications.filter(a => a.status === 'rejected').length;
+
+      document.getElementById('totalApps').textContent = total;
+      document.getElementById('pendingApps').textContent = pending;
+      document.getElementById('approvedApps').textContent = approved;
+      document.getElementById('rejectedApps').textContent = rejected;
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('viewModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Tab switching functionality
+    function switchTab(tabName, evt) {
+      // Hide all tabs
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Remove active from all buttons
+      const buttons = document.querySelectorAll('.tab-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // Show selected tab
+      const tabEl = document.getElementById(tabName);
+      if (tabEl) tabEl.classList.add('active');
+
+      // Highlight button safely
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
+
+      if (tabName === 'ranks') {
+        displayRankOverview();
+      } else if (tabName === 'users') {
+        displayTeamMembers();
+      }
+    }
+
+    // Display rank overview
+    function displayRankOverview() {
+      // Update stats
+      document.getElementById('totalRankedPlayers').textContent = playerRanks.length;
+      document.getElementById('adminCount').textContent = playerRanks.filter(p => p.rank === 'Admin').length;
+      document.getElementById('moderatorCount').textContent = playerRanks.filter(p => p.rank === 'Moderator').length;
+      document.getElementById('teamMemberCount').textContent = teamMembers.length;
+
+      // Display ranks table
+      const ranksTableBody = document.getElementById('ranksTableBody');
+      ranksTableBody.innerHTML = '';
+
+      rankTiers.forEach(tier => {
+        const playersWithRank = playerRanks.filter(p => p.rank === tier.rank);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><span class="rank-badge" style="background: ${tier.color}; padding: 0.3rem 0.8rem; border-radius: 4px; color: white; font-weight: bold;">${tier.rank}</span></td>
+          <td>${playersWithRank.length} player(s)
+            ${playersWithRank.length > 0 ? `<br><small style="color: #999;">${playersWithRank.map(p => p.player).join(', ')}</small>` : ''}
+          </td>
+          <td>${tier.minPlaytime > 0 ? tier.minPlaytime + ' hours' : 'No minimum'}</td>
+          <td>${playersWithRank.length > 0 ? playersWithRank.map(p => p.assignedBy).join(', ') : '-'}</td>
+        `;
+        ranksTableBody.appendChild(row);
+      });
+
+      // Display access table
+      const accessTableBody = document.getElementById('accessTableBody');
+      accessTableBody.innerHTML = '';
+
+      teamMembers.forEach(user => {
+        const row = document.createElement('tr');
+        const accessLevel = user.role === 'admin' ? 'Full Admin Access ⭐' : user.role === 'moderator' ? 'Moderator Access 🔧' : 'View Only 👁️';
+        const accessColor = user.role === 'admin' ? '#f44336' : user.role === 'moderator' ? '#2196f3' : '#4caf50';
+        
+        row.innerHTML = `
+          <td>${user.name}</td>
+          <td><span style="background: ${accessColor}; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem;">${user.role.toUpperCase()}</span></td>
+          <td>${user.email}</td>
+          <td>${accessLevel}</td>
+        `;
+        accessTableBody.appendChild(row);
+      });
+    }
+
+    // Display team members
+    function displayTeamMembers() {
+      const usersList = document.getElementById('usersList');
+      usersList.innerHTML = '';
+
+      teamMembers.forEach(user => {
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.innerHTML = `
+          <h3>${user.name}</h3>
+          <div class="user-info">Email: ${user.email}</div>
+          <div class="user-info">Joined: ${user.joinDate}</div>
+          <div>
+            <span class="role-badge role-${user.role}">
+              ${user.role === 'admin' ? '⭐ Admin' : user.role === 'moderator' ? '🔧 Moderator' : '👁️ Reviewer'}
+            </span>
+          </div>
+          <div style="margin-top: 0.5rem;">
+            <span style="font-size: 0.85rem; color: #4caf50;">● ${user.status}</span>
+          </div>
+          ${user.id !== 1 ? `
+            <div class="user-actions">
+              <button class="btn-view" onclick="editUser(${user.id})">Edit</button>
+              <button class="btn-reject" onclick="removeUser(${user.id})">Remove</button>
+            </div>
+          ` : ''}
+        `;
+        usersList.appendChild(card);
+      });
+    }
+
+    // Add new user
+    function addNewUser() {
+      const name = document.getElementById('newUserName').value.trim();
+      const email = document.getElementById('newUserEmail').value.trim();
+      const role = document.getElementById('newUserRole').value;
+
+      if (!name || !email) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      const newUser = {
+        id: nextUserId++,
+        name: name,
+        email: email,
+        role: role,
+        joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+        status: 'active'
+      };
+
+      teamMembers.push(newUser);
+
+      // Clear form
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserEmail').value = '';
+      document.getElementById('newUserRole').value = 'reviewer';
+
+      displayTeamMembers();
+      alert(`✓ User "${name}" added successfully as ${role}!`);
+    }
+
+    // Edit user role
+    function editUser(userId) {
+      const user = teamMembers.find(u => u.id === userId);
+      if (!user) return;
+
+      const newRole = prompt(`Change role for ${user.name}:\nCurrent: ${user.role}\n\nEnter new role (admin/moderator/reviewer):`, user.role);
+      if (newRole && ['admin', 'moderator', 'reviewer'].includes(newRole)) {
+        user.role = newRole;
+        displayTeamMembers();
+        alert(`✓ Role updated to: ${newRole}`);
+      }
+    }
+
+    // Remove user
+    function removeUser(userId) {
+      const user = teamMembers.find(u => u.id === userId);
+      if (!user) return;
+
+      if (confirm(`Are you sure you want to remove "${user.name}" from the team?`)) {
+        teamMembers = teamMembers.filter(u => u.id !== userId);
+        displayTeamMembers();
+        alert(`✓ User removed successfully`);
+      }
+    }
+
+    // Show user menu (placeholder for future auth)
+    function showUserMenu() {
+      alert('Current user: Administrator\n\nIn a real system, this would show:\n- Account settings\n- Permissions\n- Logout\n\nFor now, everyone has full access to test the system.');
+    }
+
+    // Load applications on page load
+    loadApplications();
+
+    // Copy reference helper
+    function copyRef(id) {
+      const el = document.getElementById(`ref-${id}`);
+      const text = el ? el.textContent : id;
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('Reference copied: ' + text);
+        }).catch(err => {
+          console.error('Clipboard write failed', err);
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        alert('Reference copied: ' + text);
+      } catch (err) {
+        alert('Copy failed — please select and copy manually: ' + text);
+      }
+      document.body.removeChild(ta);
+    }
+
+    // Shared generateRef function for admin (same format as forms)
+    function generateRef() {
+      const pad = (n) => String(n).padStart(2, '0');
+      const d = new Date();
+      const date = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate());
+      const time = pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+      const rand = Math.floor(Math.random() * 9000) + 1000; // 4-digit random
+      return `RBXAPP-${date}-${time}-${rand}`;
+    }
+
+    // Export all applications (from localStorage or mockApplications) to clipboard
+    function exportAdminSubmissions() {
+      try {
+        const key = 'rbx_applications';
+        const json = localStorage.getItem(key) || JSON.stringify(mockApplications);
+        navigator.clipboard.writeText(json).then(() => {
+          alert('Applications JSON copied to clipboard.');
+        }).catch(() => {
+          prompt('Copy the applications JSON below (Ctrl+C):', json);
+        });
+      } catch (err) {
+        alert('Unable to export applications.');
+      }
+    }
+
+    // Import submissions (paste JSON) and merge into storage
+    function importSubmissionsPrompt() {
+      const pasted = prompt('Paste submissions JSON here (export from form page):');
+      if (!pasted) return;
+      try {
+        const parsed = JSON.parse(pasted);
+        if (!Array.isArray(parsed)) throw new Error('Expected an array');
+        const key = 'rbx_applications';
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        // Merge while avoiding duplicates by id
+        const ids = new Set(existing.map(e => e.id));
+        parsed.forEach(item => {
+          if (!ids.has(item.id)) {
+            existing.unshift(item);
+            ids.add(item.id);
+          }
+        });
+        localStorage.setItem(key, JSON.stringify(existing));
+        // Refresh admin view
+        displayedApplications = [...existing, ...mockApplications.filter(m => !existing.find(e => e.id === m.id))];
+        displayApplications(displayedApplications);
+        updateStats();
+        alert('Imported ' + parsed.length + ' submissions.');
+      } catch (err) {
+        alert('Invalid JSON provided: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
